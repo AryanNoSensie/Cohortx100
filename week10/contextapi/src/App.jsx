@@ -1,30 +1,58 @@
-
+// 1>>> rolling state managemnet 
 import './App.css'
+import { useState ,createContext  , useContext} from 'react'
+
+
+const BulbContext = createContext();
 
 function App() {
+ const [bulbOn,setBulbOn] = useState(true)
+
   return(
     <div>
-      <BulbTask/>
+      <BulbContext.Provider value={{
+        bulbOn : bulbOn,
+        setBulbOn : setBulbOn
+      }} >
+        <Light/>
+      </BulbContext.Provider>
+      
     </div>
   )
 }
-function BulbTask(){
 
+
+function Light(){
+  
   return(
     <div> 
-      <BulbSate/>
-    <BulbToggleswitch/>
+     <LightBulb />
+     <LightSwitch />
     </div>
   
     
   )
 }
-function BulbSate(){
-
+function LightBulb({}){
+const { bulbOn } = useContext(BulbContext) ;
+ return <div>
+  {bulbOn ? "bulb is on" : "bulb is off"}
+ </div>
 }
 
-function BulbToggleswitch(){
-  
+function LightSwitch({}){
+  const { bulbOn ,setBulbOn } = useContext(BulbContext) ;
+  function toggle(){
+    setBulbOn(!bulbOn)
+  }
+
+  return(
+    <div>
+      <button onClick={toggle}>
+        Toggle it 
+      </button>
+    </div>
+  )
 }
 
 export default App
